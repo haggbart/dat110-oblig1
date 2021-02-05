@@ -6,7 +6,7 @@ import no.hvl.dat110.messaging.MessagingClient;
 
 public class RPCClient {
 
-    private MessagingClient msgclient;
+    private final MessagingClient msgclient;
     private Connection connection;
 
     public RPCClient(String server, int port) {
@@ -20,13 +20,13 @@ public class RPCClient {
 
     public void connect() {
 
-        // TODO: connect using the underlying messaging layer connection
+        // connect using the underlying messaging layer connection
         connection = msgclient.connect();
     }
 
     public void disconnect() {
 
-        // TODO: disconnect/close the underlying messaging connection
+        // disconnect/close the underlying messaging connection
         connection.close();
     }
 
@@ -34,7 +34,7 @@ public class RPCClient {
 
         byte[] rpcreply = null;
 		
-		/* TODO: 
+		/*
 		
 		Make a remote call on the RPC server by sending the RPC request message
 		and receive an RPC reply message
@@ -48,10 +48,6 @@ public class RPCClient {
 
         connection.send(message);
 
-        rpcreply = connection.receive().getData();
-
-        return rpcreply;
-
+        return connection.receive().getData();
     }
-
 }

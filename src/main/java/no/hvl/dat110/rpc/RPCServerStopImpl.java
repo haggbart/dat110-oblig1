@@ -17,6 +17,5 @@ public class RPCServerStopImpl implements RPCImpl {
     public void stop() {
 
         System.out.println("RPC server executing stop");
-
     }
 }

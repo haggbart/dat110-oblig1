@@ -28,7 +28,6 @@ public class Message {
         System.arraycopy(payload, 0, encoded, 1, payload.length);
 
         return encoded;
-
     }
 
     public void decapsulate(byte[] received) {

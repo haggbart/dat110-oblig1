@@ -5,13 +5,12 @@ import no.hvl.dat110.rpc.RPCServer;
 import no.hvl.dat110.rpc.RPCServerStopStub;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class TestRPC {
 
-    private static int PORT = 8080;
-    private static String SERVER = "localhost";
+    private static final int PORT = 8080;
+    private static final String SERVER = "localhost";
 
     @Test
     public void testStartStop() {
@@ -19,32 +18,25 @@ public class TestRPC {
         RPCClient client = new RPCClient(SERVER, PORT);
         RPCServer server = new RPCServer(PORT);
 
-        Thread serverthread = new Thread() {
+        Thread serverthread = new Thread(() -> {
 
-            public void run() {
+            server.run();
 
-                server.run();
+            server.stop();
+        });
 
-                server.stop();
-            }
-        };
+        Thread clientthread = new Thread(() -> {
 
-        Thread clientthread = new Thread() {
+            client.connect();
 
-            public void run() {
+            RPCServerStopStub stub = new RPCServerStopStub();
 
-                client.connect();
+            client.register(stub);
 
-                RPCServerStopStub stub = new RPCServerStopStub();
+            stub.stop();
 
-                client.register(stub);
-
-                stub.stop();
-
-                client.disconnect();
-
-            }
-        };
+            client.disconnect();
+        });
 
         System.out.println("System starting ... ");
 
@@ -60,7 +52,6 @@ public class TestRPC {
         }
 
         System.out.println("System stopping ... ");
-
     }
 
     @Test
@@ -69,42 +60,36 @@ public class TestRPC {
         RPCClient client = new RPCClient(SERVER, PORT);
         RPCServer server = new RPCServer(PORT);
 
-        Thread serverthread = new Thread() {
+        Thread serverthread = new Thread(() -> {
 
-            public void run() {
+            TestVoidVoidImpl voidvoidimpl = new TestVoidVoidImpl();
 
-                TestVoidVoidImpl voidvoidimpl = new TestVoidVoidImpl();
+            server.register(1, voidvoidimpl);
 
-                server.register(1, voidvoidimpl);
+            server.run();
 
-                server.run();
+            server.stop();
+        });
 
-                server.stop();
-            }
-        };
+        Thread clientthread = new Thread(() -> {
 
-        Thread clientthread = new Thread() {
+            client.connect();
 
-            public void run() {
+            RPCServerStopStub stopstub = new RPCServerStopStub();
+            TestVoidVoidStub voidvoidstub = new TestVoidVoidStub();
 
-                client.connect();
+            client.register(stopstub);
+            client.register(voidvoidstub);
 
-                RPCServerStopStub stopstub = new RPCServerStopStub();
-                TestVoidVoidStub voidvoidstub = new TestVoidVoidStub();
+            // void test case
+            voidvoidstub.m();
 
-                client.register(stopstub);
-                client.register(voidvoidstub);
+            assertTrue(true); // just check that we complete call
+            stopstub.stop();
 
-                // void test case
-                voidvoidstub.m();
+            client.disconnect();
 
-                assertTrue(true); // just check that we complete call
-                stopstub.stop();
-
-                client.disconnect();
-
-            }
-        };
+        });
 
         System.out.println("System starting ... ");
 
@@ -120,7 +105,6 @@ public class TestRPC {
         }
 
         System.out.println("System stopping ... ");
-
     }
 
     @Test
@@ -129,44 +113,38 @@ public class TestRPC {
         RPCClient client = new RPCClient(SERVER, PORT);
         RPCServer server = new RPCServer(PORT);
 
-        Thread serverthread = new Thread() {
+        Thread serverthread = new Thread(() -> {
 
-            public void run() {
+            TestStringStringImpl stringstringimpl = new TestStringStringImpl();
 
-                TestStringStringImpl stringstringimpl = new TestStringStringImpl();
+            server.register(2, stringstringimpl);
 
-                server.register(2, stringstringimpl);
+            server.run();
 
-                server.run();
+            server.stop();
+        });
 
-                server.stop();
-            }
-        };
+        Thread clientthread = new Thread(() -> {
 
-        Thread clientthread = new Thread() {
+            client.connect();
 
-            public void run() {
+            RPCServerStopStub stopstub = new RPCServerStopStub();
+            TestStringStringStub stringstringstub = new TestStringStringStub();
 
-                client.connect();
+            client.register(stopstub);
+            client.register(stringstringstub);
 
-                RPCServerStopStub stopstub = new RPCServerStopStub();
-                TestStringStringStub stringstringstub = new TestStringStringStub();
+            // string test case
+            String teststr = "string";
+            String resstr = stringstringstub.m(teststr);
 
-                client.register(stopstub);
-                client.register(stringstringstub);
+            assertEquals(teststr + teststr, resstr);
 
-                // string test case
-                String teststr = "string";
-                String resstr = stringstringstub.m(teststr);
+            stopstub.stop();
 
-                assertEquals(teststr + teststr, resstr);
+            client.disconnect();
 
-                stopstub.stop();
-
-                client.disconnect();
-
-            }
-        };
+        });
 
         System.out.println("System starting ... ");
 
@@ -182,7 +160,6 @@ public class TestRPC {
         }
 
         System.out.println("System stopping ... ");
-
     }
 
     @Test
@@ -191,44 +168,38 @@ public class TestRPC {
         RPCClient client = new RPCClient(SERVER, PORT);
         RPCServer server = new RPCServer(PORT);
 
-        Thread serverthread = new Thread() {
+        Thread serverthread = new Thread(() -> {
 
-            public void run() {
+            TestIntIntImpl intintimpl = new TestIntIntImpl();
 
-                TestIntIntImpl intintimpl = new TestIntIntImpl();
+            server.register(3, intintimpl);
 
-                server.register(3, intintimpl);
+            server.run();
 
-                server.run();
+            server.stop();
+        });
 
-                server.stop();
-            }
-        };
+        Thread clientthread = new Thread(() -> {
 
-        Thread clientthread = new Thread() {
+            client.connect();
 
-            public void run() {
+            RPCServerStopStub stopstub = new RPCServerStopStub();
+            TestIntIntStub intintstub = new TestIntIntStub();
 
-                client.connect();
+            client.register(stopstub);
+            client.register(intintstub);
 
-                RPCServerStopStub stopstub = new RPCServerStopStub();
-                TestIntIntStub intintstub = new TestIntIntStub();
+            // int test case
+            int x = 42;
+            int resx = intintstub.m(x);
 
-                client.register(stopstub);
-                client.register(intintstub);
+            assertEquals(x, resx);
 
-                // int test case
-                int x = 42;
-                int resx = intintstub.m(x);
+            stopstub.stop();
 
-                assertEquals(x, resx);
+            client.disconnect();
 
-                stopstub.stop();
-
-                client.disconnect();
-
-            }
-        };
+        });
 
         System.out.println("System starting ... ");
 
@@ -244,7 +215,6 @@ public class TestRPC {
         }
 
         System.out.println("System stopping ... ");
-
     }
 
     @Test
@@ -253,49 +223,40 @@ public class TestRPC {
         RPCClient client = new RPCClient(SERVER, PORT);
         RPCServer server = new RPCServer(PORT);
 
-        Thread serverthread = new Thread() {
+        Thread serverthread = new Thread(() -> {
 
-            public void run() {
+            TestBooleanBooleanImpl boolboolimpl = new TestBooleanBooleanImpl();
 
-                TestBooleanBooleanImpl boolboolimpl = new TestBooleanBooleanImpl();
+            server.register(4, boolboolimpl);
 
-                server.register(4, boolboolimpl);
+            server.run();
 
-                server.run();
+            server.stop();
+        });
 
-                server.stop();
-            }
-        };
+        Thread clientthread = new Thread(() -> {
 
-        Thread clientthread = new Thread() {
+            client.connect();
 
-            public void run() {
+            RPCServerStopStub stopstub = new RPCServerStopStub();
+            TestBooleanBooleanStub boolboolstub = new TestBooleanBooleanStub();
 
-                client.connect();
+            client.register(stopstub);
+            client.register(boolboolstub);
 
-                RPCServerStopStub stopstub = new RPCServerStopStub();
-                TestBooleanBooleanStub boolboolstub = new TestBooleanBooleanStub();
+            // boolean test case
 
-                client.register(stopstub);
-                client.register(boolboolstub);
+            boolean resb = boolboolstub.m(true);
 
-                // boolean test case
+            assertFalse(resb);
 
-                boolean testb = true;
-                boolean resb = boolboolstub.m(testb);
+            resb = boolboolstub.m(false);
+            assertTrue(resb);
 
-                assertEquals(!testb, resb);
+            stopstub.stop();
 
-                testb = false;
-                resb = boolboolstub.m(testb);
-                assertEquals(!testb, resb);
-
-                stopstub.stop();
-
-                client.disconnect();
-
-            }
-        };
+            client.disconnect();
+        });
 
         System.out.println("System starting ... ");
 
@@ -311,7 +272,6 @@ public class TestRPC {
         }
 
         System.out.println("System stopping ... ");
-
     }
 
     @Test
@@ -320,75 +280,66 @@ public class TestRPC {
         RPCClient client = new RPCClient(SERVER, PORT);
         RPCServer server = new RPCServer(PORT);
 
-        Thread serverthread = new Thread() {
+        Thread serverthread = new Thread(() -> {
 
-            public void run() {
+            TestVoidVoidImpl voidvoidimpl = new TestVoidVoidImpl();
+            TestStringStringImpl stringstringimpl = new TestStringStringImpl();
+            TestIntIntImpl intintimpl = new TestIntIntImpl();
+            TestBooleanBooleanImpl boolboolimpl = new TestBooleanBooleanImpl();
 
-                TestVoidVoidImpl voidvoidimpl = new TestVoidVoidImpl();
-                TestStringStringImpl stringstringimpl = new TestStringStringImpl();
-                TestIntIntImpl intintimpl = new TestIntIntImpl();
-                TestBooleanBooleanImpl boolboolimpl = new TestBooleanBooleanImpl();
+            server.register(1, voidvoidimpl);
+            server.register(2, stringstringimpl);
+            server.register(3, intintimpl);
+            server.register(4, boolboolimpl);
 
-                server.register(1, voidvoidimpl);
-                server.register(2, stringstringimpl);
-                server.register(3, intintimpl);
-                server.register(4, boolboolimpl);
+            server.run();
 
-                server.run();
+            server.stop();
+        });
 
-                server.stop();
-            }
-        };
+        Thread clientthread = new Thread(() -> {
 
-        Thread clientthread = new Thread() {
+            client.connect();
 
-            public void run() {
+            RPCServerStopStub stopstub = new RPCServerStopStub();
+            TestVoidVoidStub voidvoidstub = new TestVoidVoidStub();
+            TestStringStringStub stringstringstub = new TestStringStringStub();
+            TestIntIntStub intintstub = new TestIntIntStub();
+            TestBooleanBooleanStub boolboolstub = new TestBooleanBooleanStub();
 
-                client.connect();
+            client.register(stopstub);
+            client.register(voidvoidstub);
+            client.register(stringstringstub);
+            client.register(intintstub);
+            client.register(boolboolstub);
 
-                RPCServerStopStub stopstub = new RPCServerStopStub();
-                TestVoidVoidStub voidvoidstub = new TestVoidVoidStub();
-                TestStringStringStub stringstringstub = new TestStringStringStub();
-                TestIntIntStub intintstub = new TestIntIntStub();
-                TestBooleanBooleanStub boolboolstub = new TestBooleanBooleanStub();
+            // void test case
+            voidvoidstub.m();
 
-                client.register(stopstub);
-                client.register(voidvoidstub);
-                client.register(stringstringstub);
-                client.register(intintstub);
-                client.register(boolboolstub);
+            // string test case
+            String teststr = "string";
+            String resstr = stringstringstub.m(teststr);
 
-                // void test case
-                voidvoidstub.m();
+            assertEquals(teststr + teststr, resstr);
 
-                // string test case
-                String teststr = "string";
-                String resstr = stringstringstub.m(teststr);
+            // int test case
+            int x = 42;
+            int resx = intintstub.m(x);
 
-                assertEquals(teststr + teststr, resstr);
+            assertEquals(x, resx);
+            // boolean test case
 
-                // int test case
-                int x = 42;
-                int resx = intintstub.m(x);
+            boolean resb = boolboolstub.m(true);
 
-                assertEquals(x, resx);
-                // boolean test case
+            assertFalse(resb);
 
-                boolean testb = true;
-                boolean resb = boolboolstub.m(testb);
+            resb = boolboolstub.m(false);
+            assertTrue(resb);
 
-                assertEquals(!testb, resb);
+            stopstub.stop();
 
-                testb = false;
-                resb = boolboolstub.m(testb);
-                assertEquals(!testb, resb);
-
-                stopstub.stop();
-
-                client.disconnect();
-
-            }
-        };
+            client.disconnect();
+        });
 
         System.out.println("System starting ... ");
 
@@ -404,6 +355,5 @@ public class TestRPC {
         }
 
         System.out.println("System stopping ... ");
-
     }
 }

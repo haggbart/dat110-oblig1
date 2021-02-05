@@ -8,12 +8,12 @@ import java.util.HashMap;
 
 public class RPCServer {
 
-    private MessagingServer msgserver;
+    private final MessagingServer msgserver;
     private Connection connection;
 
     // hashmap to register RPC methods which are required to implement RPCImpl
 
-    private HashMap<Integer, RPCImpl> services;
+    private final HashMap<Integer, RPCImpl> services;
 
     public RPCServer(int port) {
 
@@ -36,7 +36,6 @@ public class RPCServer {
 
         while (!stop) {
 
-            // TODO
             // - receive message containing RPC request
             Message message = connection.receive();
             // - find the identifier for the RPC methods to invoke

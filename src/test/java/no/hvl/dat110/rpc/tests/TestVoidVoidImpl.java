@@ -15,8 +15,6 @@ public class TestVoidVoidImpl implements RPCImpl {
 
         m();
 
-        byte[] reply = RPCUtils.marshallVoid(request[0]);
-
-        return reply;
+        return RPCUtils.marshallVoid(request[0]);
     }
 }

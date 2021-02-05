@@ -1,6 +1,8 @@
 package no.hvl.dat110.rpc;
 
-public class RPCCommon {
+public final class RPCCommon {
+
+    private RPCCommon() {}
 
     public static byte RPIDSTOP = 0;
 }

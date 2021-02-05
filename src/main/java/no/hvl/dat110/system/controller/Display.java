@@ -5,7 +5,7 @@ import no.hvl.dat110.rpc.RPCUtils;
 
 public class Display extends RPCStub {
 
-    private byte RPCID = 1;
+    private final byte RPCID = 1;
 
     public void write(String message) {
 

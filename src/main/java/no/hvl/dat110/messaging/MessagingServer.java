@@ -10,9 +10,7 @@ public class MessagingServer {
     public MessagingServer(int port) {
 
         try {
-
             this.welcomeSocket = new ServerSocket(port);
-
         } catch (IOException ex) {
 
             System.out.println("Messaging server: " + ex.getMessage());
@@ -25,9 +23,7 @@ public class MessagingServer {
 
         Connection connection = null;
 
-        // TODO
         // accept TCP connection on welcome socket and create messaging connection
-
         try {
             connection = new Connection(welcomeSocket.accept());
         } catch (IOException e) {
@@ -35,7 +31,6 @@ public class MessagingServer {
         }
 
         return connection;
-
     }
 
     public void stop() {
@@ -51,5 +46,4 @@ public class MessagingServer {
             }
         }
     }
-
 }

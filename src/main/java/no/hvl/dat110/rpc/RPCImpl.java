@@ -4,6 +4,5 @@ package no.hvl.dat110.rpc;
 
 public interface RPCImpl {
 
-    public byte[] invoke(byte[] request);
-
+    byte[] invoke(byte[] request);
 }

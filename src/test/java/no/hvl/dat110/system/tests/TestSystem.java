@@ -27,7 +27,6 @@ class TestSystem {
         controllerthread.start();
 
         try {
-
             displaythread.join();
             sensorthread.join();
             controllerthread.join();
@@ -41,5 +40,4 @@ class TestSystem {
 
         System.out.println("System stopping ...");
     }
-
 }

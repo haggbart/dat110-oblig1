@@ -1,6 +1,8 @@
 package no.hvl.dat110;
 
-public class TODO {
+public final class TODO {
+
+    private TODO() {}
 
     public static String method() {
 
@@ -13,6 +15,5 @@ public class TODO {
     public static String construtor(String className) {
 
         return "Konstruktøren for klassen " + className + " er ikke implementert";
-
     }
 }

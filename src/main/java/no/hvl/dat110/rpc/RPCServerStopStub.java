@@ -7,9 +7,6 @@ public class RPCServerStopStub extends RPCStub {
 
         byte[] request = RPCUtils.marshallVoid(RPCCommon.RPIDSTOP);
 
-        byte[] response = rpcclient.call(request);
-
-        RPCUtils.unmarshallVoid(response);
-
+        rpcclient.call(request);
     }
 }

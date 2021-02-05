@@ -11,8 +11,6 @@ public class TestStringStringStub extends RPCStub {
 
         byte[] reply = rpcclient.call(request);
 
-        String strres = RPCUtils.unmarshallString(reply);
-
-        return strres;
+        return RPCUtils.unmarshallString(reply);
     }
 }

@@ -5,8 +5,8 @@ import java.net.Socket;
 
 public class MessagingClient {
 
-    private String server;
-    private int port;
+    private final String server;
+    private final int port;
 
     public MessagingClient(String server, int port) {
         this.server = server;
@@ -19,10 +19,8 @@ public class MessagingClient {
         Socket clientSocket;
         Connection connection = null;
 
-        // TODO
         // create TCP socket for client and connection
         // create connection object
-
 
         try {
             clientSocket = new Socket(server, port);
@@ -31,7 +29,6 @@ public class MessagingClient {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
 
         return connection;
     }

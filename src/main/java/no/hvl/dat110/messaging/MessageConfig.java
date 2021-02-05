@@ -1,6 +1,8 @@
 package no.hvl.dat110.messaging;
 
-public class MessageConfig {
+public final class MessageConfig {
+
+    private MessageConfig() {}
 
     public static final int SEGMENTSIZE = 128;
 

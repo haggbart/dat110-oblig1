@@ -5,7 +5,7 @@ import no.hvl.dat110.rpc.RPCUtils;
 
 public class TestIntIntStub extends RPCStub {
 
-    private byte RPCID = 3;
+    private final byte RPCID = 3;
 
     public int m(int x) {
 
@@ -13,8 +13,6 @@ public class TestIntIntStub extends RPCStub {
 
         byte[] reply = rpcclient.call(request);
 
-        int xres = RPCUtils.unmarshallInteger(reply);
-
-        return xres;
+        return RPCUtils.unmarshallInteger(reply);
     }
 }

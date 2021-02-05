@@ -9,5 +9,4 @@ public abstract class RPCStub {
     public void register(RPCClient rmiclient) {
         this.rpcclient = rmiclient;
     }
-
 }

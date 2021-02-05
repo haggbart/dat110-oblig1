@@ -11,9 +11,7 @@ public class TestIntIntImpl implements RPCImpl {
 
         int resx = m(x);
 
-        byte[] reply = RPCUtils.marshallInteger(request[0], resx);
-
-        return reply;
+        return RPCUtils.marshallInteger(request[0], resx);
     }
 
     public int m(int x) {

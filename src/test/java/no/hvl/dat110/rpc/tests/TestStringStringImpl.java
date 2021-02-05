@@ -11,9 +11,7 @@ public class TestStringStringImpl implements RPCImpl {
 
         String resstr = m(str);
 
-        byte[] reply = RPCUtils.marshallString(request[0], resstr);
-
-        return reply;
+        return RPCUtils.marshallString(request[0], resstr);
     }
 
     public String m(String str) {
