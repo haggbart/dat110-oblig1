@@ -12,11 +12,9 @@ public class RPCUtils {
 
     public static byte[] marshallString(byte rpcid, String str) {
 
-        byte[] encoded;
-
         // marshall RPC identifier and string into byte array
 
-        encoded = new byte[str.length() + 1];
+        byte[] encoded = new byte[str.length() + 1];
         encoded[0] = rpcid;
         System.arraycopy(str.getBytes(StandardCharsets.UTF_8),
                 0, encoded, 1, str.length());
