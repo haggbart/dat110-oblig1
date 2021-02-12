@@ -42,6 +42,7 @@ public class RPCServer {
             int rpcid = message.getData()[0];
             // - lookup the method to be invoked
             RPCImpl method = services.get(rpcid);
+            if (method == null) continue;
             // - invoke the method
             byte[] reply = method.invoke(message.getData());
             // - send back message containing RPC reply
@@ -51,7 +52,6 @@ public class RPCServer {
                 stop = true;
             }
         }
-
     }
 
     public void register(int rpcid, RPCImpl impl) {
