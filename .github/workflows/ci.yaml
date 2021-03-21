@@ -23,3 +23,7 @@ jobs:
         run: mvn -B package -DskipTests --file pom.xml
       - name: Run tests
         run: mvn -B test --file pom.xml
+      - name: Coveralls
+        uses: coverallsapp/github-action@master
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
